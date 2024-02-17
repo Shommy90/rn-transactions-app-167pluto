@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
 import { Text, View } from "@/components/Themed";
 
-export default function CreateScreen() {
+export default function ListScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create</Text>
+      <Text style={styles.title}>List</Text>
     </View>
   );
 }

@@ -1,0 +1,8 @@
+{
+  "fees": [
+    { "id": 1, "minValue": 10, "fee": 2.5 },
+    { "id": 2, "minValue": 100, "fee": 4.5131 },
+    { "id": 3, "minValue": 1000, "fee": 8 }
+  ],
+  "transcations": [{ "id": 1, "value": 1231, "createdAt": 1706724563777 }]
+}
