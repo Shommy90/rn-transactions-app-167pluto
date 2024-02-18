@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function CreateScreen() {
   const [amount, setAmount] = useState("");
@@ -40,8 +41,10 @@ export default function CreateScreen() {
       await axios.post("http://localhost:3000/transactions", transaction);
 
       setAmount("");
+      alert("Transaction successful!");
     } catch (error) {
       console.error("Error adding transaction:", error);
+      alert("Something went wrong.");
     } finally {
       setIsModalVisible(false);
     }
@@ -97,14 +100,24 @@ export default function CreateScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Add New Transaction</Text>
 
-      <View style={styles.formWrapper}>
-        <TextInput
-          placeholder="Enter Transaction Amount"
-          keyboardType="numeric"
-          value={amount}
-          onChangeText={setAmount}
-          style={styles.input}
-        />
+      <View style={styles.formContainer}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Enter Transaction Amount"
+            keyboardType="numeric"
+            value={amount}
+            onChangeText={setAmount}
+            style={styles.input}
+          />
+
+          <TouchableOpacity
+            style={styles.clearButton}
+            onPress={() => setAmount("")}
+          >
+            <AntDesign name="close" size={16} color="#979797" />
+          </TouchableOpacity>
+        </View>
+
         <Button
           title="Submit Transaction"
           onPress={handleOpenModal}
@@ -152,16 +165,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
-  formWrapper: {
+  formContainer: {
     width: "100%",
     paddingHorizontal: 30,
   },
+  inputContainer: {
+    marginBottom: 20,
+  },
   input: {
     width: "100%",
-    marginBottom: 20,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderColor: "#cccccc",
+    borderColor: "#979797",
     borderWidth: 1,
     borderRadius: 20,
   },
@@ -196,5 +211,16 @@ const styles = StyleSheet.create({
     top: 10,
     alignItems: "center",
     justifyContent: "center",
+  },
+  clearButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    right: 5,
+    top: 0,
+    bottom: 0,
+    paddingHorizontal: 10,
+    borderTopEndRadius: 10,
+    borderBottomEndRadius: 10,
   },
 });
