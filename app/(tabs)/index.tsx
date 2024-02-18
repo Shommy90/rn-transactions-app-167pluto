@@ -132,7 +132,6 @@ export default function CreateScreen() {
         transparent={true}
         visible={isModalVisible}
         onRequestClose={() => setIsModalVisible(false)}
-        style={styles.modalContainer}
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
@@ -140,7 +139,7 @@ export default function CreateScreen() {
               style={styles.close}
               onPress={() => setIsModalVisible(false)}
             >
-              <FontAwesome size={20} name="close" />
+              <AntDesign name="close" size={20} color="#979797" />
             </TouchableOpacity>
 
             <Text style={styles.modalText}>
@@ -183,7 +182,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "rgba(255,255,255, 0.3)",
+    backgroundColor: "rgba(255,255,255, 0.8)",
   },
   modalView: {
     margin: 20,
