@@ -1,8 +1,91 @@
 {
   "fees": [
-    { "id": 1, "minValue": 10, "fee": 2.5 },
-    { "id": 2, "minValue": 100, "fee": 4.5131 },
-    { "id": 3, "minValue": 1000, "fee": 8 }
+    {
+      "id": "1",
+      "minValue": 10,
+      "fee": 2.5
+    },
+    {
+      "id": "2",
+      "minValue": 100,
+      "fee": 4.5131
+    },
+    {
+      "id": "3",
+      "minValue": 1000,
+      "fee": 8
+    }
   ],
-  "transcations": [{ "id": 1, "value": 1231, "createdAt": 1706724563777 }]
+  "transactions": [
+    {
+      "id": "b9e7",
+      "value": 111,
+      "createdAt": 1708260652469
+    },
+    {
+      "id": "f9f5",
+      "value": 10,
+      "createdAt": 1708268872197
+    },
+    {
+      "id": "e00f",
+      "value": 100,
+      "createdAt": 1708268875306
+    },
+    {
+      "id": "1ca8",
+      "value": 1000,
+      "createdAt": 1708268880973
+    },
+    {
+      "id": "e51e",
+      "value": 1212,
+      "createdAt": 1708269530581
+    },
+    {
+      "id": "541e",
+      "value": 3434,
+      "createdAt": 1708269608477
+    },
+    {
+      "id": "6a59",
+      "value": 5454,
+      "createdAt": 1708269624520
+    },
+    {
+      "id": "fd14",
+      "value": 3322,
+      "createdAt": 1708270657831
+    },
+    {
+      "id": "2481",
+      "value": 1111,
+      "createdAt": 1708270800186
+    },
+    {
+      "id": "54d4",
+      "value": 65,
+      "createdAt": 1708273307361
+    },
+    {
+      "id": "7dc1",
+      "value": 113,
+      "createdAt": 1708273557448
+    },
+    {
+      "id": "1708273893145",
+      "value": 123,
+      "createdAt": "2024-02-18T16:31:33.145Z"
+    },
+    {
+      "id": "1708273899132",
+      "value": 234,
+      "createdAt": "2024-02-18T16:31:39.132Z"
+    },
+    {
+      "id": "1708273903992",
+      "value": 456,
+      "createdAt": "2024-02-18T16:31:43.992Z"
+    }
+  ]
 }
