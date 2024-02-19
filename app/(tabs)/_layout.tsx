@@ -30,7 +30,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Create",
+          title: "",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="plus-square-o" color={color} />
           ),
@@ -39,7 +39,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="list"
         options={{
-          title: "List",
+          title: "",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="list-ul" color={color} />
           ),
@@ -48,7 +48,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="pending"
         options={{
-          title: "Pending",
+          title: "",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="clock-o" color={color} />
           ),
