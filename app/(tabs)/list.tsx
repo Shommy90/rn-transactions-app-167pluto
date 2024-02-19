@@ -4,6 +4,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
 import { FlashList } from "@shopify/flash-list";
 import TransactionsService from "../../services/transactions";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Colors from "@/constants/Colors";
 
 export default function ListScreen() {
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -41,9 +43,16 @@ export default function ListScreen() {
         }
       }}
     >
-      <Text style={styles.transactionText}>Amount: ${item.value}</Text>
-      <Text style={styles.transactionText}>
-        Date: {new Date(item.createdAt).toLocaleDateString()}
+      <View style={styles.amountContainer}>
+        <MaterialCommunityIcons
+          name="transfer"
+          size={26}
+          color={`${Colors.palette.green}90`}
+        />
+        <Text style={styles.transactionTextAmount}>${item.value}</Text>
+      </View>
+      <Text style={styles.transactionTextDate}>
+        {new Date(item.createdAt).toLocaleDateString()}
       </Text>
     </View>
   );
@@ -87,8 +96,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 6,
     elevation: 4,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
-  transactionText: {
-    fontSize: 16,
+  amountContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  transactionTextAmount: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#444",
+    marginLeft: 10,
+  },
+  transactionTextDate: {
+    fontSize: 12,
+    color: "gray",
   },
 });
