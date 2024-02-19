@@ -61,7 +61,13 @@ export default function CreateScreen() {
       };
 
       const existingTransactions = await StorageService.getItem("transactions");
-      const updatedTransactions = [...existingTransactions, newTransaction];
+      let updatedTransactions: any[] = [];
+
+      if (existingTransactions) {
+        updatedTransactions = [...existingTransactions, newTransaction];
+      } else {
+        updatedTransactions = [newTransaction];
+      }
 
       await StorageService.storeItem("transactions", updatedTransactions);
 

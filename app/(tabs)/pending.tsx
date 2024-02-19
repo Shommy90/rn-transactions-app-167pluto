@@ -14,7 +14,9 @@ export default function PendingScreen() {
     try {
       const transactions = await StorageService.getItem("transactions");
 
-      setPendingTransactions(transactions);
+      if (transactions) {
+        setPendingTransactions(transactions);
+      }
     } catch (error) {
       console.error("Failed to fetch stored transactions:", error);
     }
