@@ -6,6 +6,8 @@ import {
   StyleSheet,
   GestureResponderEvent,
   TouchableOpacityProps,
+  TextStyle,
+  ViewStyle,
 } from "react-native";
 
 type Props = TouchableOpacityProps & {
@@ -13,8 +15,8 @@ type Props = TouchableOpacityProps & {
   onPress: (event: GestureResponderEvent) => void;
   color?: string;
   textColor?: string;
-  textStyle?: any;
-  btnStyle?: any;
+  textStyle?: TextStyle;
+  btnStyle?: ViewStyle;
 };
 
 const ButtonComponent: React.FC<Props> = ({

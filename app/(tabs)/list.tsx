@@ -4,9 +4,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
 import { FlashList } from "@shopify/flash-list";
 import TransactionsService from "../../services/transactions";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Colors from "@/constants/Colors";
-import { convertToMoney } from "@/utils/money-converter";
+import TransactionListItem from "@/components/TransactionListItem";
+import { Transaction } from "@/types/Transaction";
 
 export default function ListScreen() {
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -16,10 +15,11 @@ export default function ListScreen() {
     try {
       const transactionsData = await TransactionsService.getTransactions();
 
-      transactionsData.sort((a: any, b: any) => {
-        const dateA: any = new Date(a.createdAt);
-        const dateB: any = new Date(b.createdAt);
-        return dateB - dateA;
+      transactionsData.sort((a: Transaction, b: Transaction) => {
+        const dateA = new Date(a.createdAt);
+        const dateB = new Date(b.createdAt);
+
+        return dateB.getTime() - dateA.getTime();
       });
 
       setTransactions(transactionsData);
@@ -34,37 +34,13 @@ export default function ListScreen() {
     }, [])
   );
 
-  const renderItem = ({ item }: any) => (
-    <View
-      style={styles.transactionItem}
-      onLayout={(event) => {
-        const { height } = event.nativeEvent.layout;
-        if (itemHeight === 0) {
-          setItemHeight(height);
-        }
-      }}
-    >
-      <View style={styles.amountContainer}>
-        <MaterialCommunityIcons
-          name="transfer"
-          size={26}
-          color={`${Colors.palette.green}90`}
-        />
-        <Text style={styles.transactionTextAmount}>
-          ${convertToMoney(item.value)}
-        </Text>
-      </View>
-      <Text style={styles.transactionTextDate}>
-        {new Date(item.createdAt).toLocaleDateString()}
-      </Text>
-    </View>
-  );
-
   return (
     <View style={styles.container}>
       <FlashList
         data={transactions}
-        renderItem={renderItem}
+        renderItem={({ item }) => (
+          <TransactionListItem item={item} setItemHeight={setItemHeight} />
+        )}
         keyExtractor={(item) => item.id}
         estimatedItemSize={itemHeight || 100}
         ListHeaderComponent={
@@ -84,37 +60,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
     textAlign: "center",
-  },
-  transactionItem: {
-    padding: 20,
-    backgroundColor: "#fff",
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 10,
-    shadowColor: "#444",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 6,
-    elevation: 4,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  amountContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  transactionTextAmount: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#444",
-    marginLeft: 10,
-  },
-  transactionTextDate: {
-    fontSize: 12,
-    color: "gray",
   },
 });

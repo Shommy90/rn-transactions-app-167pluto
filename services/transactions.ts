@@ -1,3 +1,4 @@
+import { Transaction } from "@/types/Transaction";
 import api from "./api";
 
 const TransactionsService = {
@@ -9,7 +10,7 @@ const TransactionsService = {
       console.error(error);
     }
   },
-  addTransaction: async (transaction: any) => {
+  addTransaction: async (transaction: Transaction) => {
     const response = await api.post("/transactions", transaction);
     return response.data;
   },

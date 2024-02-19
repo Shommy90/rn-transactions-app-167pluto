@@ -1,7 +1,8 @@
+import { Transaction } from "@/types/Transaction";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const StorageService = {
-  storeItem: async (key: any, value: any) => {
+  storeItem: async (key: string, value: Transaction[]) => {
     try {
       const jsonValue = JSON.stringify(value);
       await AsyncStorage.setItem(key, jsonValue);
@@ -9,7 +10,7 @@ const StorageService = {
       console.error(`Error storing ${key}:`, error);
     }
   },
-  getItem: async (key: any) => {
+  getItem: async (key: string) => {
     try {
       const jsonValue = await AsyncStorage.getItem(key);
       return jsonValue != null ? JSON.parse(jsonValue) : null;

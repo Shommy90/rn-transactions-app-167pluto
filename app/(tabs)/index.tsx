@@ -15,6 +15,7 @@ import ButtonComponent from "@/components/ButtonComponent";
 import { calculateTotalDeduction } from "../../utils/deduction";
 import Colors from "@/constants/Colors";
 import { convertToMoney } from "@/utils/money-converter";
+import { Transaction } from "@/types/Transaction";
 
 export default function CreateScreen() {
   const [amount, setAmount] = useState("");
@@ -38,7 +39,7 @@ export default function CreateScreen() {
   }, []);
 
   const handleProceed = async () => {
-    const transaction = {
+    const transaction: Transaction = {
       id: Date.now().toString(),
       value: parseFloat(amount),
       createdAt: Date.now(),
@@ -63,11 +64,11 @@ export default function CreateScreen() {
       const newTransaction = {
         id,
         value: parseFloat(amount),
-        createdAt: new Date().toISOString(),
+        createdAt: Date.now(),
       };
 
       const existingTransactions = await StorageService.getItem("transactions");
-      let updatedTransactions: any[] = [];
+      let updatedTransactions: Transaction[] = [];
 
       if (existingTransactions) {
         updatedTransactions = [...existingTransactions, newTransaction];
