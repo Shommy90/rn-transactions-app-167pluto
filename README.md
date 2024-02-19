@@ -90,7 +90,7 @@ Example db.json content:
 To start json-server, run the following command in your terminal:
 
 ```bash
-json-server --watch db.json --port 3000
+npx json-server db.json
 ```
 
 This command will start a local server hosting your mock API on http://localhost:3000. You can access your transactions at http://localhost:3000/transactions.
