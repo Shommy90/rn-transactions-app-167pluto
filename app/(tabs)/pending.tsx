@@ -5,6 +5,9 @@ import { useFocusEffect } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
 import StorageService from "../../services/storage";
 import TransactionsService from "../../services/transactions";
+import ButtonComponent from "@/components/ButtonComponent";
+import Colors from "@/constants/Colors";
+import { convertToMoney } from "@/utils/money-converter";
 
 export default function PendingScreen() {
   const [pendingTransactions, setPendingTransactions] = useState<any[]>([]);
@@ -71,19 +74,30 @@ export default function PendingScreen() {
         }
       }}
     >
-      <Text style={styles.transactionAmount}>
-        Amount: $ {item.value.toFixed(2)}
-      </Text>
+      <View style={styles.amountContainer}>
+        <Text style={styles.transactionAmount}>
+          ${convertToMoney(item.value)}
+        </Text>
+        <Text style={styles.transactionDate}>
+          {new Date(item.createdAt).toLocaleDateString()}
+        </Text>
+      </View>
+
       <View style={styles.buttonsContainer}>
-        <Button
-          title="Accept"
-          onPress={() => handleAccept(item.id)}
-          color="#5cb85c"
-        />
-        <Button
+        <ButtonComponent
           title="Decline"
           onPress={() => handleDecline(item.id)}
-          color="#d9534f"
+          color={Colors.palette.red}
+          btnStyle={styles.btnStyle}
+          textStyle={styles.btnText}
+        />
+        <View style={styles.btnSeparator} />
+        <ButtonComponent
+          title="Accept"
+          onPress={() => handleAccept(item.id)}
+          color={Colors.palette.green}
+          btnStyle={styles.btnStyle}
+          textStyle={styles.btnText}
         />
       </View>
     </View>
@@ -117,7 +131,8 @@ const styles = StyleSheet.create({
 
   transactionItem: {
     backgroundColor: "#fff",
-    padding: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     marginVertical: 8,
     marginHorizontal: 16,
     borderRadius: 8,
@@ -126,13 +141,31 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     elevation: 4,
-  },
-  transactionAmount: {
-    fontSize: 16,
-    marginBottom: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   buttonsContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  amountContainer: {},
+  transactionAmount: {
+    fontSize: 16,
+    marginBottom: 3,
+  },
+  transactionDate: {
+    fontSize: 12,
+    color: "gray",
+  },
+  btnStyle: {
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+  },
+  btnText: {
+    fontSize: 12,
+  },
+  btnSeparator: {
+    marginHorizontal: 8,
   },
 });

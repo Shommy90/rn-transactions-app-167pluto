@@ -6,6 +6,7 @@ import { FlashList } from "@shopify/flash-list";
 import TransactionsService from "../../services/transactions";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
+import { convertToMoney } from "@/utils/money-converter";
 
 export default function ListScreen() {
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -49,7 +50,9 @@ export default function ListScreen() {
           size={26}
           color={`${Colors.palette.green}90`}
         />
-        <Text style={styles.transactionTextAmount}>${item.value}</Text>
+        <Text style={styles.transactionTextAmount}>
+          ${convertToMoney(item.value)}
+        </Text>
       </View>
       <Text style={styles.transactionTextDate}>
         {new Date(item.createdAt).toLocaleDateString()}
@@ -105,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   transactionTextAmount: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "#444",
     marginLeft: 10,

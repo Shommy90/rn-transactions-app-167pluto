@@ -14,6 +14,7 @@ import StorageService from "../../services/storage";
 import ButtonComponent from "@/components/ButtonComponent";
 import { calculateTotalDeduction } from "../../utils/deduction";
 import Colors from "@/constants/Colors";
+import { convertToMoney } from "@/utils/money-converter";
 
 export default function CreateScreen() {
   const [amount, setAmount] = useState("");
@@ -149,7 +150,7 @@ export default function CreateScreen() {
               <Text style={styles.modalTextAmount}>
                 Total Amount:{" "}
                 <Text style={styles.textHighLight}>
-                  {totalDeduction.toFixed(2)}
+                  {convertToMoney(totalDeduction)}
                 </Text>
               </Text>
               <Text style={styles.modalTextFee}>Fee: {currentFee}</Text>
