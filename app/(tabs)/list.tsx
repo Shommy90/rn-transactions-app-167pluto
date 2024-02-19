@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
 import { FlashList } from "@shopify/flash-list";
-import TransactionsService from "../services/transactions";
+import TransactionsService from "../../services/transactions";
 
 export default function ListScreen() {
   const [transactions, setTransactions] = useState<any[]>([]);

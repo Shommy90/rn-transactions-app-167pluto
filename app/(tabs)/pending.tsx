@@ -3,8 +3,8 @@ import { Text, View } from "@/components/Themed";
 import { useCallback, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
-import StorageService from "../services/storage";
-import TransactionsService from "../services/transactions";
+import StorageService from "../../services/storage";
+import TransactionsService from "../../services/transactions";
 
 export default function PendingScreen() {
   const [pendingTransactions, setPendingTransactions] = useState<any[]>([]);

@@ -8,9 +8,11 @@ import {
 import { Text, View } from "@/components/Themed";
 import { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
-import FeesService from "../services/fees";
-import TransactionsService from "../services/transactions";
-import StorageService from "../services/storage";
+import FeesService from "../../services/fees";
+import TransactionsService from "../../services/transactions";
+import StorageService from "../../services/storage";
+import ButtonComponent from "@/components/ButtonComponent";
+import { calculateTotalDeduction } from "../../utils/deduction";
 
 export default function CreateScreen() {
   const [amount, setAmount] = useState("");
@@ -81,19 +83,15 @@ export default function CreateScreen() {
     }
   };
 
-  const handleOpenModal = () => {
+  const handleSubmit = () => {
+    if (!Number(amount)) {
+      alert("Input must be number!");
+      return;
+    }
+
     const total = calculateTotalDeduction(amount, fees);
     setTotalDeduction(total);
     setIsModalVisible(true);
-  };
-
-  const calculateTotalDeduction = (amount: string, fees: any[]) => {
-    fees.sort((a, b) => b.minValue - a.minValue);
-
-    const applicableFee = fees.find((fee) => amount >= fee.minValue)?.fee || 0;
-    const totalAmount = parseFloat(amount) + parseFloat(applicableFee);
-
-    return totalAmount;
   };
 
   return (
@@ -118,9 +116,9 @@ export default function CreateScreen() {
           </TouchableOpacity>
         </View>
 
-        <Button
-          title="Submit Transaction"
-          onPress={handleOpenModal}
+        <ButtonComponent
+          title="Submit"
+          onPress={handleSubmit}
           disabled={amount === ""}
         />
       </View>
