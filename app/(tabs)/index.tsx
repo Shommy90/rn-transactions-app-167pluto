@@ -7,10 +7,10 @@ import {
 } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { useEffect, useState } from "react";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign } from "@expo/vector-icons";
+import FeesService from "../services/fees";
+import TransactionsService from "../services/transactions";
+import StorageService from "../services/storage";
 
 export default function CreateScreen() {
   const [amount, setAmount] = useState("");
@@ -21,8 +21,9 @@ export default function CreateScreen() {
   useEffect(() => {
     const fetchFees = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/fees");
-        setFees(response.data);
+        const feesData = await FeesService.getFees();
+
+        setFees(feesData);
       } catch (error) {
         console.error("Error fetching fees:", error);
       }
@@ -38,7 +39,7 @@ export default function CreateScreen() {
     };
 
     try {
-      await axios.post("http://localhost:3000/transactions", transaction);
+      await TransactionsService.addTransaction(transaction);
 
       setAmount("");
       alert("Transaction successful!");
@@ -58,18 +59,11 @@ export default function CreateScreen() {
         value: parseFloat(amount),
         createdAt: new Date().toISOString(),
       };
-      const existingTransactionsString = await AsyncStorage.getItem(
-        "transactions"
-      );
-      const existingTransactions = existingTransactionsString
-        ? JSON.parse(existingTransactionsString)
-        : [];
+
+      const existingTransactions = await StorageService.getItem("transactions");
       const updatedTransactions = [...existingTransactions, newTransaction];
 
-      await AsyncStorage.setItem(
-        "transactions",
-        JSON.stringify(updatedTransactions)
-      );
+      await StorageService.storeItem("transactions", updatedTransactions);
 
       setAmount("");
       alert("Transaction stored for later!");

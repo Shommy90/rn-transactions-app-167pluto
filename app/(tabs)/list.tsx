@@ -1,9 +1,9 @@
+import { useCallback, useState } from "react";
 import { StyleSheet } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { Text, View } from "@/components/Themed";
-import { useCallback, useState } from "react";
-import axios from "axios";
 import { FlashList } from "@shopify/flash-list";
+import TransactionsService from "../services/transactions";
 
 export default function ListScreen() {
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -11,18 +11,17 @@ export default function ListScreen() {
 
   const fetchTransactions = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/transactions");
-      const transactions = response.data;
+      const transactionsData = await TransactionsService.getTransactions();
 
-      transactions.sort((a: any, b: any) => {
+      transactionsData.sort((a: any, b: any) => {
         const dateA: any = new Date(a.createdAt);
         const dateB: any = new Date(b.createdAt);
         return dateB - dateA;
       });
 
-      setTransactions(response.data);
+      setTransactions(transactionsData);
     } catch (error) {
-      console.error("Error fetching fees:", error);
+      console.error("Error fetching transactions:", error);
     }
   };
 

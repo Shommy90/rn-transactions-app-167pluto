@@ -1,10 +1,10 @@
 import { StyleSheet, Button } from "react-native";
 import { Text, View } from "@/components/Themed";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCallback, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { FlashList } from "@shopify/flash-list";
-import axios from "axios";
+import StorageService from "../services/storage";
+import TransactionsService from "../services/transactions";
 
 export default function PendingScreen() {
   const [pendingTransactions, setPendingTransactions] = useState<any[]>([]);
@@ -12,14 +12,9 @@ export default function PendingScreen() {
 
   const fetchStoredTransactions = async () => {
     try {
-      const storedTransactionsString = await AsyncStorage.getItem(
-        "transactions"
-      );
-      const storedTransactions = storedTransactionsString
-        ? JSON.parse(storedTransactionsString)
-        : [];
+      const transactions = await StorageService.getItem("transactions");
 
-      setPendingTransactions(storedTransactions);
+      setPendingTransactions(transactions);
     } catch (error) {
       console.error("Failed to fetch stored transactions:", error);
     }
@@ -30,6 +25,39 @@ export default function PendingScreen() {
       fetchStoredTransactions();
     }, [])
   );
+
+  const handleDecline = async (transactionId: string, ifAccepted?: boolean) => {
+    try {
+      const transactions = await StorageService.getItem("transactions");
+      const updatedTransactions = transactions.filter(
+        (transaction: any) => transaction.id !== transactionId
+      );
+
+      await StorageService.storeItem("transactions", updatedTransactions);
+
+      setPendingTransactions(updatedTransactions);
+      !ifAccepted && alert("Transaction declined and removed.");
+    } catch (error) {
+      console.error("Error declining transaction:", error);
+      alert("Failed to decline transaction. Please try again.");
+    }
+  };
+
+  const handleAccept = async (transactionId: string) => {
+    const transaction = pendingTransactions.find(
+      (item) => item.id === transactionId
+    );
+
+    try {
+      await TransactionsService.addTransaction(transaction);
+      await handleDecline(transactionId, true);
+
+      alert("Transaction accepted and removed from pending list.");
+    } catch (error) {
+      console.error("Error accepting transaction:", error);
+      alert("Failed to accept transaction. Please try again.");
+    }
+  };
 
   const renderItem = ({ item }: any) => (
     <View
@@ -58,45 +86,6 @@ export default function PendingScreen() {
       </View>
     </View>
   );
-
-  const handleDecline = async (transactionId: string, ifAccepted?: boolean) => {
-    try {
-      const transactionsString = await AsyncStorage.getItem("transactions");
-      const transactions = transactionsString
-        ? JSON.parse(transactionsString)
-        : [];
-      const updatedTransactions = transactions.filter(
-        (transaction: any) => transaction.id !== transactionId
-      );
-
-      await AsyncStorage.setItem(
-        "transactions",
-        JSON.stringify(updatedTransactions)
-      );
-
-      setPendingTransactions(updatedTransactions);
-      !ifAccepted && alert("Transaction declined and removed.");
-    } catch (error) {
-      console.error("Error declining transaction:", error);
-      alert("Failed to decline transaction. Please try again.");
-    }
-  };
-
-  const handleAccept = async (transactionId: string) => {
-    const transaction = pendingTransactions.find(
-      (item) => item.id === transactionId
-    );
-
-    try {
-      await axios.post("http://localhost:3000/transactions", transaction);
-      await handleDecline(transactionId, true);
-
-      alert("Transaction accepted and removed from pending list.");
-    } catch (error) {
-      console.error("Error accepting transaction:", error);
-      alert("Failed to accept transaction. Please try again.");
-    }
-  };
 
   return (
     <View style={styles.container}>
