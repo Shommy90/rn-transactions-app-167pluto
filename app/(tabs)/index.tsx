@@ -36,6 +36,7 @@ export default function CreateScreen() {
 
   const handleProceed = async () => {
     const transaction = {
+      id: Date.now().toString(),
       value: parseFloat(amount),
       createdAt: Date.now(),
     };

@@ -1,3 +1,4 @@
+import Colors from "@/constants/Colors";
 import React from "react";
 import {
   TouchableOpacity,
@@ -17,8 +18,8 @@ type Props = TouchableOpacityProps & {
 const ButtonComponent: React.FC<Props> = ({
   title,
   onPress,
-  color = "#007BFF",
-  textColor = "#FFFFFF",
+  color = Colors.palette.blue,
+  textColor = Colors.palette.white,
   ...touchableOpacityProps
 }) => {
   return (
