@@ -20,5 +20,7 @@ export default {
   palette: {
     white: "#ffffff",
     blue: tintColorLight,
+    red: "#d9534f",
+    green: "#5cb85c",
   },
 };

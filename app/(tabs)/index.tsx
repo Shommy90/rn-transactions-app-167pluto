@@ -13,12 +13,14 @@ import TransactionsService from "../../services/transactions";
 import StorageService from "../../services/storage";
 import ButtonComponent from "@/components/ButtonComponent";
 import { calculateTotalDeduction } from "../../utils/deduction";
+import Colors from "@/constants/Colors";
 
 export default function CreateScreen() {
   const [amount, setAmount] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [totalDeduction, setTotalDeduction] = useState(0);
   const [fees, setFees] = useState([]);
+  const [currentFee, setCurrentFee] = useState(0);
 
   useEffect(() => {
     const fetchFees = async () => {
@@ -90,8 +92,10 @@ export default function CreateScreen() {
       return;
     }
 
-    const total = calculateTotalDeduction(amount, fees);
-    setTotalDeduction(total);
+    const totalAmount = calculateTotalDeduction(amount, fees).totalAmount;
+    const calcCurrentFee = calculateTotalDeduction(amount, fees).applicableFee;
+    setTotalDeduction(totalAmount);
+    setCurrentFee(calcCurrentFee);
     setIsModalVisible(true);
   };
 
@@ -141,11 +145,35 @@ export default function CreateScreen() {
               <AntDesign name="close" size={20} color="#979797" />
             </TouchableOpacity>
 
-            <Text style={styles.modalText}>
-              Total Deduction: {totalDeduction.toFixed(2)}
-            </Text>
-            <Button title="Proceed" onPress={handleProceed} />
-            <Button title="Store for Later" onPress={handleStoreTransaction} />
+            <View>
+              <Text style={styles.modalTextAmount}>
+                Total Amount:{" "}
+                <Text style={styles.textHighLight}>
+                  {totalDeduction.toFixed(2)}
+                </Text>
+              </Text>
+              <Text style={styles.modalTextFee}>Fee: {currentFee}</Text>
+            </View>
+
+            <View style={styles.buttonsContainer}>
+              <View style={styles.btnContainer}>
+                <ButtonComponent
+                  title="Store"
+                  onPress={handleStoreTransaction}
+                  textStyle={styles.btnText}
+                  btnStyle={styles.btnStyle}
+                />
+              </View>
+              <View style={styles.btnContainer}>
+                <ButtonComponent
+                  title="Proceed"
+                  onPress={handleProceed}
+                  textStyle={styles.btnText}
+                  btnStyle={styles.btnStyle}
+                  color={Colors.palette.green}
+                />
+              </View>
+            </View>
           </View>
         </View>
       </Modal>
@@ -187,7 +215,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "white",
     borderRadius: 10,
-    padding: 35,
+    padding: 15,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -198,9 +226,17 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  modalText: {
-    marginBottom: 15,
-    textAlign: "center",
+  modalTextAmount: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  modalTextFee: {
+    fontSize: 12,
+    opacity: 0.7,
+    color: Colors.palette.red,
+  },
+  textHighLight: {
+    fontWeight: "bold",
   },
   close: {
     padding: 5,
@@ -220,5 +256,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderTopEndRadius: 10,
     borderBottomEndRadius: 10,
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    marginTop: 40,
+  },
+  btnContainer: {
+    flex: 1,
+  },
+  btnText: {
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  btnStyle: {
+    paddingVertical: 8,
+    marginHorizontal: 10,
   },
 });

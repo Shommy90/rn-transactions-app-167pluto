@@ -4,5 +4,5 @@ export const calculateTotalDeduction = (amount: string, fees: any[]) => {
   const applicableFee = fees.find((fee) => amount >= fee.minValue)?.fee || 0;
   const totalAmount = parseFloat(amount) + parseFloat(applicableFee);
 
-  return totalAmount;
+  return { applicableFee, totalAmount };
 };

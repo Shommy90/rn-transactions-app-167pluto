@@ -13,6 +13,8 @@ type Props = TouchableOpacityProps & {
   onPress: (event: GestureResponderEvent) => void;
   color?: string;
   textColor?: string;
+  textStyle?: any;
+  btnStyle?: any;
 };
 
 const ButtonComponent: React.FC<Props> = ({
@@ -20,6 +22,8 @@ const ButtonComponent: React.FC<Props> = ({
   onPress,
   color = Colors.palette.blue,
   textColor = Colors.palette.white,
+  textStyle,
+  btnStyle,
   ...touchableOpacityProps
 }) => {
   return (
@@ -31,11 +35,14 @@ const ButtonComponent: React.FC<Props> = ({
           backgroundColor: color,
           opacity: touchableOpacityProps.disabled ? 0.5 : 1,
         },
+        btnStyle,
       ]}
       activeOpacity={0.8}
       {...touchableOpacityProps}
     >
-      <Text style={[styles.text, { color: textColor }]}>{title}</Text>
+      <Text style={[styles.text, { color: textColor }, textStyle]}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
